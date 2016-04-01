@@ -245,7 +245,102 @@ public:
 	static void PSHSRPluginPlotCrossSection(void)
 	{
 		// Add your code for command PSHSRPlugin.PlotCrossSection here
+		CStringArray arrContent;
+		int nColNum = 0;
+		CExcelHelper::ImportDataExcel(arrContent,nColNum);
+		if (nColNum == 0) return;
 		PlotCrossSection plot;
+		for (int i = 0; i < arrContent.GetCount() / nColNum; ++ i)
+		{
+			if (0 == i) continue;
+
+			PlotCrossSection::ChannelData data;
+			double dValue = 0.0;
+			for (int j = 0; j < nColNum; ++ j)
+			{
+				CString strValue = arrContent.GetAt(i*nColNum+j);
+				switch (j)
+				{
+				case 0:
+					data.m_nNo = _tstoi(strValue);
+					break;
+				case 1:
+					{
+						data.m_strName = strValue;
+					}
+					break;
+				case 2:
+					{
+						data.m_dIrrigatedArea = _tstof(strValue);
+					}
+					break;
+				case 3:
+					data.m_dIrrigatedArea = _tstof(strValue);
+					break;
+				case 4:
+					data.m_dLength = _tstof(strValue);
+					break;
+				case 5:
+					data.m_dVerticalSlope = _tstof(strValue);
+					break;
+				case 6:
+					data.m_dLeftSlope = _tstof(strValue);
+					break;
+				case 7:
+					data.m_dRightSlope = _tstof(strValue);
+					break;
+				case 8:
+					data.m_dDesignFlow = _tstof(strValue);
+					break;
+				case 9:
+					data.m_dEnhanceFlow = _tstof(strValue);
+					break;
+				case 10:
+					data.m_dDesignWidth = _tstof(strValue);
+					break;
+				case 11:
+					data.m_dHeight = _tstof(strValue);
+					break;
+				case 12:
+					data.m_dDesignHeight = _tstof(strValue);
+					break;
+				case 13:
+					data.m_dEnhanceHeight = _tstof(strValue);
+					break;
+				case 14:
+					data.m_dLiningHeight = _tstof(strValue);
+					break;
+				case 15:
+					data.m_dLiningThickness = _tstof(strValue);
+					break;
+				case 16:
+					data.m_strStartPileNo = (strValue);
+					break;
+				case 17:
+					data.m_strEndPileNo = (strValue);
+					break;
+				case 18:
+					data.m_dTop = _tstof(strValue);
+					break;
+				case 19:
+					data.m_dEnhance = _tstof(strValue);
+					break;
+				case 20:
+					data.m_dDesign = _tstof(strValue);
+					break;
+				case 21:
+					data.m_dBottom = _tstof(strValue);
+					break;
+				}
+			}
+
+			plot.appendData(data);
+
+			//pt = pt + AcGeVector3d::kXAxis * (plotSection.getStateWidth() * (1+plotSection.getStateInnerSlope()+plotSection.getStateOutterSlope()) * 1000 * 2);
+			/*plotSection.setInsert(pt);
+			pt = pt + AcGeVector3d::kXAxis * 1000;
+			plotSection.CreateModel();*/
+		}
 		plot.createModel();
 	}
 } ;
